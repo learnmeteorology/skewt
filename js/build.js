@@ -1,4 +1,4 @@
-/* global Thermo, SOUNDINGS, SkewChart, SkewGuide */
+/* global Thermo, SOUNDINGS, SkewChart, SkewGuide, SkewParams */
 // Step-by-step story: each step adds one layer to the chart. Going back removes it.
 (function () {
   'use strict';
@@ -23,20 +23,20 @@
       'These show how rising air inside a cloud cools. It cools more slowly than dry air.'],
     ['mix', 'Mixing ratio lines',
       'These show how much water vapor saturated air holds. The background is now complete.'],
-    ['temp', 'Plot the temperature',
-      'The red line is the air temperature at each height. We measure it with radiosondes: small instrument packages carried up by weather balloons. Their readings are the data we plot.'],
+    ['temp', 'Plot the environmental temperature',
+      'The environmental temperature is the temperature of the surrounding air at each height. We measure it with radiosondes: small instrument packages carried up by weather balloons. Their readings are the data we plot.'],
     ['dew', 'Plot the dewpoint',
-      'The green line is the dewpoint. Where it is close to the red line, the air is humid.'],
+      'Now add the dewpoint. Where it is close to the environmental temperature, the air is humid.'],
     ['wind', 'Add the wind',
       'Wind barbs on the right show wind. The long staff points to where the wind comes from. Add up its marks to get the speed:'],
     ['parcel', 'Lift a parcel of air',
-      'The solid blue line is the temperature of a parcel of ground-level air pushed upward. The LCL (lifting condensation level) is where it becomes saturated.'],
+      'The parcel temperature follows a parcel of ground-level air pushed upward. The LCL (lifting condensation level) is where it becomes saturated.'],
     ['levels', 'Where can the parcel rise on its own?',
-      'Higher up, the parcel gets warmer than the air at the LFC (level of free convection). It stays warmer up to the EL (equilibrium level).'],
+      'Higher up, the parcel temperature becomes warmer than the environmental temperature at the LFC (level of free convection). It stays warmer up to the EL (equilibrium level).'],
     ['cin', 'CIN: the push it needs',
-      'The blue area is CIN (convective inhibition). There the parcel is colder than the air, so it needs a push to reach the LFC.'],
+      'The newly shaded area is CIN (convective inhibition). There the parcel temperature is colder than the environmental temperature, so the parcel needs a push to reach the LFC.'],
     ['cape', 'CAPE: energy for rising',
-      'The red area is CAPE (convective available potential energy). There the parcel is warmer than the air. More CAPE allows stronger updrafts.'],
+      'The newly shaded area is CAPE (convective available potential energy). There the parcel temperature is warmer than the environmental temperature. More CAPE allows stronger updrafts.'],
     ['done', 'You have built a Skew\u2011T',
       'Every layer is in place. <a href="#lines">See what each line is for</a>.'],
   ];
@@ -131,6 +131,33 @@
   // The explanations below the builder: each card gets a drawing of its line.
   document.querySelectorAll('[data-sample]').forEach(card => card.prepend(SkewGuide.sample(card.dataset.sample)));
   barbKey($('cardbarbs'));
+  const showParams = SkewParams.render($('params'), $('parammenu'));
+
+  // Beginner shows the basics and Intermediate shows everything. The choice is remembered.
+  const LEVELS = {
+    beginner: { hint: 'The basics', note: 'Beginner shows the basic parameters. Intermediate has more of them, with extra equation steps.',
+      other: 'intermediate', button: 'Show Intermediate' },
+    intermediate: { hint: 'Everything', note: 'Intermediate shows every parameter.', other: 'beginner', button: 'Show only the basics' },
+  };
+  let level = 'beginner';
+  try { if (localStorage.getItem('learnLevel') === 'intermediate') level = 'intermediate'; } catch (e) { /* storage may be blocked */ }
+  const levelButtons = document.querySelectorAll('[data-level]');
+  function setLevel(chosen) {
+    level = chosen;
+    document.body.classList.toggle('beginner', level === 'beginner');
+    for (const button of levelButtons) button.setAttribute('aria-pressed', button.dataset.level === level);
+    $('levelhint').textContent = LEVELS[level].hint;
+    $('levelnote').textContent = LEVELS[level].note;
+    $('levelswitch').textContent = LEVELS[level].button;
+    showParams(level);
+  }
+  function chooseLevel(chosen) {
+    setLevel(chosen);
+    try { localStorage.setItem('learnLevel', chosen); } catch (e) { /* not remembered */ }
+  }
+  for (const button of levelButtons) button.addEventListener('click', () => chooseLevel(button.dataset.level));
+  $('levelswitch').addEventListener('click', () => chooseLevel(LEVELS[level].other));
+  setLevel(level);
 
   const back = $('back'), next = $('next');
   const dots = STEPS.map((s, i) => {

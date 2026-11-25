@@ -220,6 +220,12 @@
     scoreSummary(marked);
     topicCards(marked);
     answerList(marked);
+    const note = el('p', 'Found a problem or have an idea? ', $('figure'));
+    note.className = 'feedback-link';
+    const link = el('a', 'Send feedback (opens in a new tab)', note);
+    link.href = 'feedback.html';
+    link.target = '_blank';
+    link.rel = 'noopener';
   }
 
   function begin() {

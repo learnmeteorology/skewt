@@ -71,7 +71,7 @@
     { topic: 'lifting', kind: 'lfc', q: 'Click the LFC (level of free convection).', why: 'The LFC is the level where the lifted parcel becomes warmer than the air around it: the blue parcel path crosses to the warm side of the red line. Levels are the short flat markers on the right side of the chart.' },
     { topic: 'lifting', kind: 'el', q: 'Click the EL (equilibrium level).', why: 'The EL is high up, where the lifted parcel stops being warmer than the air around it. Levels are the short flat markers on the right side of the chart.' },
     { topic: 'lifting', kind: 'cape', q: 'Click the area that shows CAPE.', why: 'CAPE is shaded where the lifted parcel is warmer than the surrounding air, above the LFC.' },
-    { topic: 'lifting', kind: 'cin', q: 'Click the area that shows CIN.', why: 'CIN is shaded where the lifted parcel is colder than the surrounding air, below the EL.' },
+    { topic: 'lifting', kind: 'cin', q: 'Click the area that shows CIN.', why: 'CIN is shaded where the lifted parcel is colder than the surrounding air, below the LFC.' },
   ];
 
   // "Plot the data": the learner places one temperature or dewpoint at a time.

@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About · Skew-T Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Carlito:wght@400;700&display=swap">
+  <link rel="stylesheet" href="style.css">
+  <script src="js/theme.js"></script>
+</head>
+<body class="about-page">
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="Skew-T Guide home">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="8"/><path class="g" d="M8 26 13 17 11 12 16 6"/><path class="r" d="M20 26 17 18 22 13 25 6"/></svg>
+      <span>Skew-T Guide</span>
+    </a>
+    <nav class="tabs" aria-label="Pages">
+      <a href="index.html">Start</a>
+      <a href="build.html">Learn</a>
+      <a href="explore.html">Explore</a>
+      <a href="practice.html">Practice</a>
+      <a href="test.html">Test</a>
+    </nav>
+    <button id="theme" type="button"></button>
+  </header>
+  <main class="about">
+    <header class="about-head">
+      <h1>About this site</h1>
+      <p>Skew-T Guide is a free introduction to reading a Skew-T log-P diagram. It is written for beginners, so no experience is needed.</p>
+    </header>
+
+    <section>
+      <h2>What you can do</h2>
+      <ul class="about-cards">
+        <li><a href="build.html"><strong>Learn</strong><span>Build a chart one layer at a time, then read what each line is for.</span></a></li>
+        <li><a href="explore.html"><strong>Explore</strong><span>Look up lines, change the temperature and dewpoint, and see how a lifted parcel responds.</span></a></li>
+        <li><a href="practice.html"><strong>Practice</strong><span>Identify chart features and plot data, with hints.</span></a></li>
+        <li><a href="test.html"><strong>Test</strong><span>Check what you know. It is a self-check and is not suitable for graded exams.</span></a></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Please keep in mind</h2>
+      <p class="about-warning"><strong>Not for forecasting or safety decisions.</strong> For real weather warnings, use your official weather service.</p>
+      <dl class="about-rows about-box">
+        <div><dt>Examples</dt><dd>The example soundings are made up for teaching. They are not observations.</dd></div>
+        <div><dt>What is calculated</dt><dd>The parcel results in Explore, Practice and Test use a parcel starting at the surface. A few Learn examples, such as wet-bulb temperature and the Showalter Index, start at 850 mb. There is no hodograph.</dd></div>
+        <div><dt>Moisture correction</dt><dd>To stay simple, Learn, Practice and Test compare actual temperatures. The Full chart in Explore also allows for moisture (virtual temperature), so its values differ.</dd></div>
+        <div><dt>Full chart rules</dt><dd>It counts each warm layer of more than 1 J/kg, even a very small one near the ground, and its CIN includes colder layers up to the highest EL. This can differ from textbooks and other software.</dd></div>
+      </dl>
+    </section>
+
+    <section>
+      <h2>How the numbers were checked</h2>
+      <p>The site's calculations were compared with MetPy 1.7.1, an open-source weather library, using the three examples and warmer and cooler versions of them.</p>
+      <table class="about-table">
+        <thead><tr><th scope="col">Value</th><th scope="col">Compared with MetPy</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">LCL (lifting condensation level)</th><td>Agreed within 1 mb</td></tr>
+          <tr><th scope="row">EL (equilibrium level)</th><td>Agreed within 3 mb</td></tr>
+          <tr><th scope="row">CAPE, Full chart</th><td>The site was up to about 9% higher</td></tr>
+          <tr><th scope="row">CIN, Full chart</th><td>Agreed within 15 J/kg</td></tr>
+          <tr><th scope="row">LFC (level of free convection)</th><td>Can differ more when the site counts a warm layer starting at the ground</td></tr>
+        </tbody>
+      </table>
+      <p class="about-small">This is not a guarantee that every value or sentence is correct.</p>
+    </section>
+
+    <section>
+      <h2>Sources</h2>
+  <ul class="sources about-box">
+        <li>Wallace, J. M., and P. V. Hobbs, 2006: <cite>Atmospheric Science: An Introductory Survey</cite>. 2nd ed. International Geophysics Series, Vol. 92, Academic Press (Elsevier). ISBN 978-0-12-732951-2.</li>
+        <li>Bolton, D., 1980: The computation of equivalent potential temperature. <cite>Monthly Weather Review</cite>, 108, 1046–1053. Used for saturation vapor pressure. <a href="https://doi.org/10.1175/1520-0493(1980)108%3C1046:TCOEPT%3E2.0.CO;2" target="_blank" rel="noopener">Article link</a></li>
+        <li>National Weather Service, Lincoln, Illinois: <a href="https://www.weather.gov/ilx/swop-severetopics-CAPE" target="_blank" rel="noopener">CAPE</a></li>
+        <li>National Weather Service: <a href="https://forecast.weather.gov/glossary.php?letter=c" target="_blank" rel="noopener">Glossary entries on capping and convective inhibition</a></li>
+        <li>National Weather Service: <a href="https://www.weather.gov/source/zhu/ZHU_Training_Page/convective_parameters/skewt/skewtinfo.html" target="_blank" rel="noopener">Training page on Skew-T parameters</a></li>
+        <li>National Weather Service glossary entries on the <a href="https://forecast.weather.gov/glossary.php?letter=c" target="_blank" rel="noopener">convective condensation level and convective temperature</a>, <a href="https://forecast.weather.gov/glossary.php?letter=k" target="_blank" rel="noopener">K Index</a>, <a href="https://forecast.weather.gov/glossary.php?letter=s" target="_blank" rel="noopener">Showalter Index</a> and <a href="https://forecast.weather.gov/glossary.php?letter=t" target="_blank" rel="noopener">Total Totals Index</a></li>
+        <li>NOAA JetStream: <a href="https://www.noaa.gov/jetstream/upperair/radiosondes" target="_blank" rel="noopener">Radiosondes</a></li>
+      </ul>
+    </section>
+
+    <section class="about-cta about-box">
+      <h2>Found a mistake?</h2>
+      <p>Corrections and ideas are welcome.</p>
+      <a class="cta" href="feedback.html">Send feedback</a>
+    </section>
+  </main>
+</body>
+</html>

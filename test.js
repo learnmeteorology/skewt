@@ -95,4 +95,32 @@ assert.strictEqual(new Set(quizItems.filter(item => item.type === 'find').map(it
 for (const item of quizItems) assert(Q.TOPICS[item.topic], 'known topic');
 for (const topic of Object.keys(Q.TOPICS)) assert(quizItems.some(item => item.topic === topic), `topic covered: ${topic}`);
 for (const sounding of S) assert.strictEqual(Q.plotItems(sounding).length, 12, sounding.name + ' plot points');
+// Learn's parameter examples must stay in a physically sensible order.
+{
+  const P = require('./js/params.js').values(T, S[0]);
+  assert(P.w < P.ws && P.rh > 0 && P.rh < 100, 'moisture values');
+  assert(P.a.td < P.wetBulb && P.wetBulb < P.a.t, 'wet-bulb between dewpoint and temperature');
+  assert(P.thetaE > P.theta, 'theta-e above theta');
+  near(P.liftedIndex, P.at500.air - P.at500.parcel, 1e-12, 'lifted index');
+  const F = require('./js/params.js'), Q2 = F.toolValues(T, S[0]);
+  assert(Q2.ccl.p < P.parcel.lcl.p && Q2.convective > S[0].levels[0].t, 'CCL above LCL, convective temperature above surface');
+  near(T.dewFromMixingRatio(Q2.sfcW, Q2.ccl.p), Q2.ccl.t, 0.01, 'CCL is where the two lines meet');
+  near(Q2.kIndex, 25, 1e-9, 'K Index');
+  near(Q2.totalTotals, 53, 1e-9, 'Total Totals');
+  const freezing = F.freezingLevels(T, S[2].levels);
+  assert.strictEqual(freezing.length, 2, 'winter example crosses 0 C twice');
+  for (const p of freezing) near(T.interp(S[2].levels, 't', p), 0, 0.01, 'freezing level');
+  const L = F.lapseRate(T, S[0].levels, 700, 500);
+  near(L.rate * L.thickness / 1000, L.lower.t - L.upper.t, 1e-9, 'lapse rate');
+  assert(L.rate > 7 && L.rate < 9, 'storm 700-500 mb lapse rate');
+  const at = (p, t) => ({ p, t: t === undefined ? S[0].levels.find(l => l.p === p).t : t });
+  assert.strictEqual(F.stability(T, at(950), at(900)).kind, 'stable', 'cap layer');
+  assert.strictEqual(F.stability(T, at(700), at(500)).kind, 'conditionally unstable', 'middle layer');
+  assert.strictEqual(F.stability(T, at(1000, 33), at(950)).kind, 'unstable', 'heated ground layer');
+  assert(S[2].levels[0].t < S[2].levels[2].t, 'winter inversion');
+}
+{
+  const P = require('./js/params.js').values(T, S[0]);
+  assert(P.tv > P.a.t && P.tv - P.a.t < 3, 'virtual temperature a little above temperature');
+}
 console.log('all checks passed');

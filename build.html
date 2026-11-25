@@ -7,14 +7,17 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Carlito:wght@400;700&display=swap">
+  <!-- KaTeX typesets the equations. If it can't load, a plain-text equation is shown. -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="style.css">
   <script src="js/theme.js"></script>
 </head>
 <body class="build-page">
   <header class="topbar">
-    <a class="brand" href="index.html" aria-label="Skew-T Explorer home">
+    <a class="brand" href="index.html" aria-label="Skew-T Guide home">
       <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="8"/><path class="g" d="M8 26 13 17 11 12 16 6"/><path class="r" d="M20 26 17 18 22 13 25 6"/></svg>
-      <span>Skew-T Explorer</span>
+      <span>Skew-T Guide</span>
     </a>
     <nav class="tabs" aria-label="Pages">
       <a href="index.html">Start</a>
@@ -28,6 +31,13 @@
   <main class="story">
     <div class="stage">
       <h1 class="story-title">Make a Skew-T Log-P</h1>
+      <div class="level">
+        <div class="segmented" role="group" aria-label="Level of detail">
+          <button type="button" data-level="beginner" aria-pressed="true">Beginner</button>
+          <button type="button" data-level="intermediate" aria-pressed="false">Intermediate</button>
+        </div>
+        <span id="levelhint" aria-live="polite"></span>
+      </div>
       <svg id="build" viewBox="0 0 820 760" role="img" aria-label="Skew-T diagram that gains lines at each step"></svg>
       <section class="caption">
         <div class="caption-top">
@@ -47,9 +57,10 @@
     </div>
     <div id="lines" class="explain">
       <p class="explain-intro">Here is what each line on the chart shows, and what we use it for.</p>
+      <p class="explain-jump"><a href="#parameters">Jump to finding more parameters on a Skew-T</a></p>
       <div class="define">
         <p>A <strong>parcel</strong> is a small, imaginary portion of air that we can follow as it rises or sinks. Using a parcel this way is called <strong>parcel theory</strong>.</p>
-        <p>The math behind it can get complicated. A Skew-T lets us work through much of it on the chart: its background lines already show how a parcel's temperature changes as it rises, and how much water vapor saturated air can hold. By following them, we can compare the parcel with the surrounding air and identify features such as the LCL, LFC, EL, CAPE and CIN.</p>
+        <p>The math behind it can get complicated. A Skew-T lets us work through much of it on the chart: its background lines already show how a parcel's temperature changes as it rises, and how much water vapor saturated air can hold. By following them, we can compare the parcel temperature with the environmental temperature and identify features such as the LCL, LFC, EL, CAPE and CIN.</p>
         <p>Parcel theory is a simplified picture. For example, real rising air also mixes with the air around it.</p>
       </div>
       <section class="line-group">
@@ -73,21 +84,21 @@
           <div>
             <h3>Dry adiabats</h3>
             <p>They show how the temperature of unsaturated air changes as it rises or sinks without trading heat with its surroundings: about 10 °C per kilometer. Rising air cools, and sinking air warms along the same lines.</p>
-            <p class="use"><strong>What we use it for:</strong> following a parcel of air as it is lifted, before any cloud forms.</p>
+            <p class="use"><strong>What we use it for:</strong> following a dry adiabat to track a lifted parcel before it becomes saturated, from the ground up to the LCL.</p>
           </div>
         </article>
         <article class="line-card" data-sample="moist">
           <div>
             <h3>Moist adiabats</h3>
             <p>They show how saturated air cools as it keeps rising. Condensing water releases heat, so it cools more slowly than dry air, especially low down where the air is warm.</p>
-            <p class="use"><strong>What we use it for:</strong> following a lifted parcel after it becomes saturated, inside a cloud.</p>
+            <p class="use"><strong>What we use it for:</strong> following a moist adiabat to track a lifted parcel after it becomes saturated, from the LCL upward, inside a cloud.</p>
           </div>
         </article>
         <article class="line-card" data-sample="mix">
           <div>
             <h3>Mixing ratio lines</h3>
             <p>Each line marks one saturation mixing ratio: the grams of water vapor in each kilogram of dry air when the air is saturated.</p>
-            <p class="use"><strong>What we use it for:</strong> finding moisture. Read them at the dewpoint to see how much vapor the air has, or at the temperature to see how much it could hold. They also help find the LCL.</p>
+            <p class="use"><strong>What we use it for:</strong> finding moisture. Read the mixing ratio line at the dewpoint to see how much vapor the air has, or at the temperature to see how much it could hold. To help find the LCL, follow a mixing ratio line up from the ground dewpoint until it crosses the dry adiabat from the ground temperature.</p>
           </div>
         </article>
       </section>
@@ -96,16 +107,16 @@
         <p>These come from measurements, so they change with the weather. Radiosondes, small instrument packages carried up by weather balloons, send their readings to the ground by radio. Real soundings have many more readings than the made-up examples on this site.</p>
         <article class="line-card" data-sample="temp">
           <div>
-            <h3>Temperature</h3>
-            <p>The solid red line is the temperature of the air at each height.</p>
-            <p class="use"><strong>What we use it for:</strong> seeing how temperature changes with height. A layer where it gets warmer going up is called an inversion. This is also the line a lifted parcel is compared with.</p>
+            <h3>Environmental temperature</h3>
+            <p>The temperature of the surrounding atmosphere at each height.</p>
+            <p class="use"><strong>What we use it for:</strong> seeing how the environmental temperature changes with height. A layer where it gets warmer going up is called an inversion. The parcel temperature is compared with it.</p>
           </div>
         </article>
         <article class="line-card" data-sample="dew">
           <div>
             <h3>Dewpoint</h3>
-            <p>The solid green line. The dewpoint is how cold the air would have to be, at the same pressure, to become saturated. It is never to the right of the temperature.</p>
-            <p class="use"><strong>What we use it for:</strong> judging how moist the air is. Where the green and red lines are close, the air is humid. Where they are far apart, it is dry.</p>
+            <p>The dewpoint is how cold the air would have to be, at the same pressure, to become saturated. It is never higher than the environmental temperature.</p>
+            <p class="use"><strong>What we use it for:</strong> judging how moist the air is. Where the dewpoint is close to the environmental temperature, the air is humid. Where they are far apart, it is dry.</p>
           </div>
         </article>
         <article class="line-card" data-sample="wind">
@@ -119,56 +130,64 @@
       </section>
       <section class="line-group">
         <h2>Lifting a parcel of air</h2>
-        <p>Imagine pushing a parcel of ground-level air upward and comparing it with the air around it.</p>
+        <p>Imagine pushing a parcel of ground-level air upward and comparing its temperature with the environmental temperature.</p>
         <article class="line-card" data-sample="parcel">
           <div>
             <h3>Parcel path</h3>
-            <p>The solid blue line is the temperature of the lifted parcel. It follows a dry adiabat until it becomes saturated, then a moist adiabat.</p>
-            <p class="use"><strong>What we use it for:</strong> seeing where the parcel would be warmer or colder than the air around it.</p>
+            <p>The parcel temperature is the temperature of the lifted parcel at each height. It follows a dry adiabat until it becomes saturated, then a moist adiabat.</p>
+            <p class="use"><strong>What we use it for:</strong> comparing the parcel temperature with the environmental temperature, to see where the parcel would be warmer or colder than its environment.</p>
           </div>
         </article>
         <article class="line-card" data-sample="lcl">
           <div>
             <h3>LCL (lifting condensation level)</h3>
-            <p>Where the parcel becomes saturated. To find it, follow a dry adiabat up from the ground temperature and a mixing ratio line up from the ground dewpoint. The LCL is where they cross.</p>
+            <p>Where the parcel becomes saturated.</p>
             <p class="use"><strong>What we use it for:</strong> estimating the cloud base for air lifted from the ground.</p>
           </div>
         </article>
         <article class="line-card" data-sample="lfc">
           <div>
             <h3>LFC (level of free convection)</h3>
-            <p>Where the parcel becomes warmer than the air around it. It is then less dense and can keep rising without being pushed. Not every sounding has an LFC, and one sounding can have more than one.</p>
+            <p>Where the parcel temperature becomes warmer than the environmental temperature. The parcel is then less dense and can keep rising without being pushed. Not every sounding has an LFC, and one sounding can have more than one.</p>
             <p class="use"><strong>What we use it for:</strong> finding the height the parcel must reach before it can rise on its own.</p>
           </div>
         </article>
         <article class="line-card" data-sample="el">
           <div>
             <h3>EL (equilibrium level)</h3>
-            <p>Where the parcel stops being warmer than the air around it.</p>
-            <p class="use"><strong>What we use it for:</strong> finding the top of the layer where the parcel was warmer than the air.</p>
+            <p>Where the parcel temperature stops being warmer than the environmental temperature.</p>
+            <p class="use"><strong>What we use it for:</strong> finding the top of the layer where the parcel temperature was warmer than the environmental temperature.</p>
           </div>
         </article>
         <article class="line-card" data-sample="cin">
           <div>
             <h3>CIN (convective inhibition)</h3>
-            <p>The blue area, where the parcel is colder than the air. CIN is an amount of energy, written as a negative number of joules per kilogram (J/kg). The farther from zero, the bigger the barrier. A layer that holds air back is often called a cap.</p>
+            <p>The shaded area where the parcel temperature is colder than the environmental temperature. CIN is an amount of energy, written as a negative number of joules per kilogram (J/kg). The farther from zero, the bigger the barrier. A layer that holds air back is often called a cap.</p>
             <p class="use"><strong>What we use it for:</strong> judging how hard it is to get air to its LFC. According to p. 346 of Wallace and Hobbs (2006), when the size of CIN is above 100 J/kg, deep thunderstorms are unlikely without outside help such as daytime heating or a strong front.</p>
           </div>
         </article>
         <article class="line-card" data-sample="cape">
           <div>
             <h3>CAPE (convective available potential energy)</h3>
-            <p>The red area, where the parcel is warmer than the air. It is also measured in J/kg. On the Learn chart it fills the space between the blue parcel line and the red temperature line, from the LFC to the EL.</p>
+            <p>The shaded area where the parcel temperature is warmer than the environmental temperature. It is also measured in J/kg. On the Learn chart it fills the space between the parcel temperature and the environmental temperature, from the LFC to the EL.</p>
             <p class="use"><strong>What we use it for:</strong> judging how much energy rising air could have. More CAPE allows stronger updrafts. A large value does not mean a storm will form.</p>
           </div>
         </article>
       </section>
       <p class="explain-note">To stay simple, Learn, Practice and Test compare actual temperatures. The Full chart in Explore also allows for moisture (virtual temperature), so its CAPE, CIN, LFC and EL are different.</p>
+      <section class="line-group" id="parameters">
+        <h2>Finding more parameters on a Skew-T</h2>
+        <p>These build on the lines and parcel ideas above. The steps for the <a href="#param-parcel">parcel path</a>, <a href="#param-lcl">LCL</a>, <a href="#param-lfc">LFC</a>, <a href="#param-el">EL</a>, <a href="#param-cin">CIN</a> and <a href="#param-cape">CAPE</a> are with their descriptions. Each entry has its own zoomed chart showing only the lines you need. Follow the numbers on the chart alongside the written steps. Unless an entry says otherwise, the values are for the made-up spring storm example. They are rounded, and reading a real chart by eye gives estimates.</p>
+        <p class="inter-only">The groups start with readings taken at one level or along one line, then move a parcel, and end with indices that combine several readings.</p>
+        <p class="level-note"><span id="levelnote"></span> <button type="button" id="levelswitch"></button></p>
+        <label class="param-menu">Jump to a parameter <select id="parammenu"><option value="">Choose one</option></select></label>
+        <div id="params"></div>
+      </section>
       <section class="line-group">
         <h2>How to start reading a sounding</h2>
         <ol class="reading">
-          <li>Compare the temperature and dewpoint lines to see where the air is humid or dry.</li>
-          <li>Look for layers where temperature falls slowly or rises with height.</li>
+          <li>Compare the environmental temperature with the dewpoint to see where the air is humid or dry.</li>
+          <li>Look for layers where the environmental temperature falls slowly or rises with height.</li>
           <li>Lift a parcel and find the LCL, then any LFC and EL.</li>
           <li>Compare the CIN with the CAPE.</li>
           <li>Check how the wind changes with height.</li>
@@ -179,12 +198,14 @@
         <h2>Reference</h2>
         <p class="reference">Wallace, J. M., and P. V. Hobbs, 2006: <cite>Atmospheric Science: An Introductory Survey</cite>. 2nd ed. International Geophysics Series, Vol. 92, Academic Press (Elsevier). ISBN 978-0-12-732951-2.</p>
       </section>
+      <p class="feedback-link">Found a problem or have an idea? <a href="feedback.html">Send feedback</a> · <a href="about.html">About this site</a></p>
     </div>
   </main>
   <script src="js/thermo.js"></script>
   <script src="js/soundings.js"></script>
   <script src="js/chart.js"></script>
   <script src="js/guide.js"></script>
+  <script src="js/params.js"></script>
   <script src="js/build.js"></script>
 </body>
 </html>

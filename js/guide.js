@@ -57,6 +57,10 @@
 
   const WS = [tex`w_s = 0.622\,\frac{e_s}{p - e_s}`, 'ws = 0.622 es / (p − es)', 'Unnumbered equation, p. 82'];
 
+  // For the lessons whose equations need kelvin.
+  const NEEDS_KELVIN = 'These equations need temperatures in kelvin. To change from °C:';
+  const KELVIN = eq(tex`T_{\mathrm{K}} = T_{^\circ\mathrm{C}} + 273.15`, 'K = °C + 273.15', 'Unnumbered relation, p. 63');
+
   // Each lesson is a list of blocks. A string is a paragraph.
   const LESSONS = {
     temp: [
@@ -89,6 +93,8 @@
       eq(tex`Z_2 - Z_1 = \frac{R_d\,\overline{T_v}}{g_0}\,\ln\!\left(\frac{p_1}{p_2}\right)`, 'Z2 − Z1 = (Rd × average Tv / g0) × ln(p1 / p2)', 'Equation (3.29), p. 70'),
       'It uses virtual temperature, because moist air is less dense than dry air. In terms of the mixing ratio:',
       eq(tex`T_v = T\,\frac{w + \varepsilon}{\varepsilon\,(1 + w)}`, 'Tv = T (w + ε) / (ε (1 + w))', 'Exercise 3.7 (unnumbered equation), p. 80'),
+      'The temperature in these two equations must be in kelvin. To change from °C:',
+      KELVIN,
       where([tex`Z_1,\ Z_2`, 'Z1, Z2', 'heights at the lower and upper levels (pressures p1 and p2)'],
         [tex`\overline{T_v}`, 'average Tv', 'average virtual temperature of the layer, in kelvin'],
         [tex`T`, 'T', 'temperature in kelvin'], [tex`w`, 'w', 'mixing ratio in kg per kg'], [tex`\varepsilon`, 'ε', '0.622'],
@@ -111,6 +117,8 @@
       eq(tex`\theta = T\left(\frac{p_0}{p}\right)^{R/c_p}`, 'θ = T (p0 / p)^(R/cp)', 'Equation (3.54), p. 78'),
       where([tex`\theta`, 'θ', 'potential temperature, in kelvin'], [tex`T`, 'T', 'temperature, in kelvin'],
         [tex`p_0`, 'p0', '1000 mb'], [tex`R/c_p`, 'R/cp', 'about 0.286 for dry air; this site uses 287.04 / 1005.7, or 0.285']),
+      'Poisson’s equation needs temperature in kelvin, and gives θ in kelvin. To change from °C:',
+      KELVIN,
       h('How fast the air cools'),
       eq(tex`-\left(\frac{dT}{dz}\right)_{\text{dry parcel}} = \frac{g}{c_p} \equiv \Gamma_d`, '−(dT/dz) for a dry parcel = g / cp = Γd', 'Equation (3.53), p. 77'),
       'This dry adiabatic lapse rate is about 9.8 °C for each kilometer of rise. Sinking air warms at the same rate.',
@@ -125,6 +133,8 @@
       eq(tex`\theta_e \simeq \theta\,\exp\!\left(\frac{L_v w_s}{c_p T}\right)`, 'θe ≃ θ exp(Lv ws / (cp T))', 'Equation (3.71), p. 85'),
       where([tex`L_v`, 'Lv', 'latent heat of vaporization'], [tex`c_p`, 'cp', 'specific heat at constant pressure'],
         [tex`w_s`, 'ws', 'saturation mixing ratio in kg per kg'], [tex`T`, 'T', 'temperature in kelvin'], [tex`\theta`, 'θ', 'potential temperature']),
+      NEEDS_KELVIN,
+      KELVIN,
       h('How this site draws the lines'),
       'It solves equation (3.68), p. 85 of Wallace and Hobbs (2006), together with equation (3.54), p. 78, in small pressure steps, using the average temperature of each step for T. The same method draws the lifted parcel above the LCL. Each line is labeled by its temperature at 1000 mb.',
       'The site does not use equation (3.71), p. 85 of Wallace and Hobbs (2006), to draw the lines.',
@@ -155,6 +165,8 @@
       eq(tex`\frac{d^2 z}{dt^2} = g\left(\frac{T' - T}{T}\right)`, "d²z/dt² = g (T′ − T) / T", 'Equation (3.73), p. 89'),
       where([tex`T'`, 'T′', 'temperature of the parcel, in kelvin'], [tex`T`, 'T', 'temperature of the surrounding air, in kelvin'],
         [tex`z`, 'z', "the parcel's height"], [tex`t`, 't', 'time'], [tex`g`, 'g', 'acceleration due to gravity']),
+      'Put both temperatures into this equation in kelvin. To change from °C:',
+      KELVIN,
       'A parcel warmer than its surroundings is pushed upward. A colder one is pushed downward. As p. 89 of Wallace and Hobbs (2006) notes, virtual temperature should strictly be used here, and the Full chart does so. Real rising air also mixes with its surroundings.',
     ],
     lcl: [
@@ -192,6 +204,9 @@
       h('The math'),
       eq(tex`T_v = T\,\frac{w + \varepsilon}{\varepsilon\,(1 + w)}`, 'Tv = T (w + ε) / (ε (1 + w))', 'Exercise 3.7 (unnumbered equation), p. 80'),
       where([tex`T,\ T_v`, 'T, Tv', 'temperature and virtual temperature, in kelvin'], [tex`w`, 'w', 'mixing ratio in kg per kg'], [tex`\varepsilon`, 'ε', '0.622']),
+      'The temperature in this equation must be in kelvin. To change from °C, use the first equation below. To change the answer back, use the second:',
+      KELVIN,
+      eq(tex`T_{^\circ\mathrm{C}} = T_{\mathrm{K}} - 273.15`, '°C = K − 273.15', 'The same relation rearranged, p. 63'),
       'For the surrounding air, w comes from the dewpoint. The two lines separate most where the air holds the most water vapor.',
     ],
     tvparcel: [

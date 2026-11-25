@@ -262,9 +262,10 @@ button.primary { background: var(--brand); border-color: var(--brand); color: #f
 .toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
 .toolbar label { margin: 0; }
 .segmented { display: inline-flex; gap: 2px; padding: 3px; border: 1px solid var(--line); border-radius: 999px; background: var(--bg); }
-.controls .segmented button { border: 0; border-radius: 999px; padding: 4px 14px; font-weight: 700; color: var(--muted); background: transparent; }
-.controls .segmented button[aria-pressed="true"] { background: var(--brand); color: #fff; }
-:root[data-theme="dark"] .controls .segmented button[aria-pressed="true"] { color: #0d1117; }
+.controls .segmented button, .level .segmented button { border: 0; border-radius: 999px; padding: 4px 14px; font-weight: 700; color: var(--muted); background: transparent; }
+.controls .segmented button[aria-pressed="true"], .level .segmented button[aria-pressed="true"] { background: var(--brand); color: #fff; }
+:root[data-theme="dark"] .controls .segmented button[aria-pressed="true"],
+:root[data-theme="dark"] .level .segmented button[aria-pressed="true"] { color: #0d1117; }
 .explore-page .controls #about { margin: 8px 0 4px; font-size: .95rem; line-height: 1.35; }
 .hint { margin: 0 0 6px; color: var(--muted); font-size: .95rem; }
 .key { list-style: none; padding: 0; }
@@ -543,6 +544,11 @@ button.primary { background: var(--brand); border-color: var(--brand); color: #f
 
 /* Learn: the heading over the builder, and the explanations further down the page. */
 .story-title { flex: none; padding-top: 6px; font-size: clamp(1.4rem, 3.6vw, 2.1rem); font-weight: 700; line-height: 1.15; text-align: center; }
+/* Learn's Beginner and Intermediate choice. Beginner also hides the extra equation steps. */
+.level { display: flex; flex: none; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px 10px; }
+.level > span { color: var(--muted); font-size: .95rem; }
+.level-note button { margin-left: 4px; padding: 2px 12px; cursor: pointer; }
+body.beginner .inter-only, body.beginner .param-extra { display: none; }
 .scroll-cue { flex: none; align-self: center; font-size: .95rem; font-weight: 700; line-height: 1.3; text-align: center; }
 .scroll-cue::after { content: ' \2193'; }
 .explain { max-width: 780px; margin: 0 auto; padding: 28px 0 56px; scroll-margin-top: var(--bar); }
@@ -577,3 +583,102 @@ button.primary { background: var(--brand); border-color: var(--brand); color: #f
 }
 .explain .reference { padding-left: 2em; text-indent: -2em; }
 @media (max-width: 430px) { .build-page .scroll-cue { padding: 1px 10px; font-size: .8rem; } }
+
+/* Feedback page and the links to it. The Google form stays light in both themes. */
+.feedback { max-width: 720px; margin: 0 auto; }
+.feedback h1 { font-size: 1.8rem; }
+.feedback p { margin: 10px 0; }
+.feedback-privacy { color: var(--muted); font-size: .95rem; }
+.feedback iframe { display: block; width: 100%; height: 1447px; margin-top: 12px; background: #fff; border: 1px solid var(--line); border-radius: 12px; }
+.feedback-link { margin: 20px 0 4px; text-align: center; }
+
+/* About page: one centred column, with each kind of information in its own shape. */
+.about { max-width: 780px; margin: 0 auto; padding-bottom: 56px; }
+.about-head { text-align: center; padding: 8px 0 4px; }
+.about-head h1 { font-size: clamp(1.7rem, 4vw, 2.3rem); line-height: 1.2; }
+.about-head p { max-width: 56ch; margin: 10px auto 0; font-size: 1.15rem; line-height: 1.5; color: var(--muted); }
+.about section { margin-top: 36px; }
+.about h2 { margin: 0 0 12px; font-size: 1.35rem; line-height: 1.3; }
+.about p { margin: 0 0 12px; }
+.about-box { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; }
+.about-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 0; padding: 0; list-style: none; }
+.about-cards a { display: block; height: 100%; padding: 14px 16px; color: var(--text); text-decoration: none; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; }
+.about-cards a:hover, .about-cards a:focus-visible { border-color: var(--brand); }
+.about-cards strong { display: block; margin-bottom: 4px; font-size: 1.15rem; color: var(--parcel); }
+.about-cards span { display: block; line-height: 1.45; }
+.about .about-warning { padding: 12px 16px; background: var(--panel); border: 1px solid var(--line); border-left: 6px solid var(--temp); border-radius: 10px; }
+.about-rows { margin: 0; padding: 0 18px; }
+.about-rows > div { display: grid; grid-template-columns: 11em minmax(0, 1fr); gap: 16px; padding: 14px 0; }
+.about-rows > div + div { border-top: 1px solid var(--line); }
+.about-rows dt { font-weight: 700; }
+.about-rows dd { margin: 0; line-height: 1.5; }
+.about-table { width: 100%; border-collapse: separate; border-spacing: 0; overflow: hidden; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; }
+.about-table th, .about-table td { padding: 10px 16px; text-align: left; vertical-align: top; line-height: 1.4; }
+.about-table thead th { background: var(--bg); border-bottom: 2px solid var(--line); }
+.about-table tbody tr + tr > * { border-top: 1px solid var(--line); }
+.about .about-small { margin: 10px 0 0; color: var(--muted); font-size: .92rem; }
+.about .sources { margin: 0; padding: 4px 18px; list-style: none; }
+.about .sources li { padding: 12px 0; line-height: 1.5; overflow-wrap: anywhere; }
+.about .sources li + li { border-top: 1px solid var(--line); }
+.about section.about-cta { padding: 22px 18px; text-align: center; }
+.about-cta h2 { margin-bottom: 4px; }
+.about-cta .cta { display: inline-block; }
+@media (max-width: 560px) {
+  .about-cards { grid-template-columns: minmax(0, 1fr); }
+  .about-rows > div { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .about-rows, .about .sources { padding-left: 14px; padding-right: 14px; }
+  .about-table th, .about-table td { padding: 9px 10px; }
+}
+
+/* Learn: finding parameters. Groups open and close, and each entry has its own zoomed chart. */
+.explain-jump { margin: 6px 0 0; text-align: center; }
+#parameters, .param { scroll-margin-top: calc(var(--bar) + 8px); }
+.param-menu { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0 0 14px; font-weight: 700; }
+.param-menu select { flex: 1; min-width: 0; font-weight: 400; }
+.param-group { margin: 0 0 10px; padding: 0; overflow: hidden; }
+.param-group > summary { padding: 12px 16px; font-size: 1.15rem; font-weight: 700; cursor: pointer; }
+.param { padding: 18px 20px; border-top: 1px solid var(--line); }
+.param h4 { margin: 0 0 4px; font-size: 1.2rem; line-height: 1.3; }
+.param p { margin: 8px 0 0; line-height: 1.5; }
+.param .param-start { color: var(--muted); }
+.param-body { margin-top: 10px; }
+.param-body figure { margin: 0 auto; max-width: 560px; padding: 4px; box-shadow: none; }
+.param-case { margin-top: 18px; }
+.param-case h5 { margin: 0 0 6px; font-size: 1.05rem; }
+.param-chart { width: 100%; height: auto; }
+.param-chart .bg { stroke-width: 1.2; }
+.param-chart .param-line { stroke-width: 2.2; stroke-opacity: 1; }
+.param-chart .cin, .param-chart .cape { stroke-width: 1.5; }
+.param-route { fill: none; stroke: #ffd33d; stroke-width: 11; stroke-opacity: .6; stroke-linecap: round; stroke-linejoin: round; }
+.param-axis { fill: var(--muted); font-size: 15px; }
+.param-name, .param-answer { stroke: var(--panel); stroke-width: 5; stroke-linejoin: round; paint-order: stroke; fill: var(--text); font-size: 15px; }
+.param-answer { font-size: 18px; font-weight: 700; }
+.param-leader { fill: none; stroke: var(--text); stroke-width: 1.2; }
+.param-point { fill: var(--text); }
+.param-step { fill: var(--text); stroke: var(--panel); stroke-width: 2; }
+.param-step-number { fill: var(--panel); font-size: 14px; font-weight: 700; }
+.param-ring { fill: none; stroke: var(--text); stroke-width: 2.5; }
+.param-steps { margin: 12px 0 0; padding-left: 24px; line-height: 1.5; }
+.param-steps li { margin-bottom: 6px; }
+.param .param-result { padding: 10px 14px; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; }
+.param .use { margin-top: 10px; padding-left: 12px; border-left: 3px solid var(--line); }
+.param .param-source { color: var(--muted); font-size: .88rem; }
+@media (max-width: 640px) {
+  .param { padding: 14px 10px; }
+  /* The chart shrinks on a phone, so its words are drawn larger. */
+  .param-axis, .param-name { font-size: 19px; }
+  .param-answer { font-size: 22px; }
+}
+:root[data-theme="dark"] .param-route { stroke-opacity: .35; }
+/* Steps and charts built into a line's description. */
+.param-how { margin-top: 14px; }
+.explain .param-how h4 { margin: 0; font-size: 1.05rem; }
+.explain .line-card .param-start { color: var(--muted); }
+.explain .line-card .param-result { padding: 10px 14px; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; }
+.explain .line-card .param-source { margin-top: 10px; color: var(--muted); font-size: .88rem; }
+.explain [id^="param-"] { scroll-margin-top: calc(var(--bar) + 8px); }
+.param-zero { fill: none; stroke: var(--text); stroke-width: 2.5; stroke-dasharray: 9 5; }
+/* Learn: a typeset equation and its symbols. */
+.param-equation { margin-top: 10px; }
+.param-equation .symbols { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 14px; align-items: baseline; margin: 6px 0; }
+.param-equation .symbols dd { margin: 0; }
