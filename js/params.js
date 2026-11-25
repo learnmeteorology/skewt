@@ -158,7 +158,6 @@
   // Every chart is a straight enlargement of part of the site's Skew-T: the same log-pressure axis,
   // the same slant and the same proportions. Only the crop and the amount of zoom differ.
   const W = 520, LEFT = 66, RIGHT = 506, TOP = 28, MIN_PLOT = 300, MAX_PLOT = 460, EDGE = 55;
-  const LABELLED = [100, 150, 200, 250, 300, 400, 500, 600, 700, 850, 1000];
   let count = 0;
 
   // spec: top and bottom pressures; fit: [t, p] points that must be visible; lines: [{cls, pts, label}];
@@ -199,15 +198,18 @@
     for (const area of spec.shade || []) {
       el('path', { d: pathD(area.pts.map(point)) + 'Z', class: area.cls }, plot);
     }
-    // A pressure line every 50 mb. Where they are too close to number them all, the main levels are
-    // numbered first, then any others with room.
+    // A pressure line every 50 mb, each one numbered.
     const isobars = range(100, 1050, 50).filter(p => p >= top - 0.5 && p <= bottom + 0.5);
     for (const p of isobars) el('path', { d: pathD([[BOX.left, yOf(p)], [BOX.right, yOf(p)]]), class: 'bg isobar' }, plot);
-    const numbered = [];
-    for (const p of [...isobars].sort((a, b) => LABELLED.includes(b) - LABELLED.includes(a))) {
-      if (numbered.every(q => Math.abs(yOf(p) - yOf(q)) >= 19)) numbered.push(p);
+    // Where the lines are too close for one column of numbers, those between the hundreds go just
+    // inside the chart. If even that is tight, the lettering shrinks to fit.
+    const gap = Math.min(...isobars.slice(1).map((p, i) => yOf(p) - yOf(isobars[i])));
+    for (const p of isobars) {
+      const inside = gap < 19 && p % 100 !== 0;
+      const label = text(svg, inside ? BOX.left + 4 : BOX.left - 6, yOf(p) + 5, `${p}`, `param-axis pressure${inside ? ' inside' : ''}`, inside ? 'start' : 'end');
+      const room = (gap < 19 ? 2 * gap : gap) - 0.5;
+      if (room < 19) label.style.fontSize = `min(var(--axis-size), ${room.toFixed(1)}px)`;
     }
-    for (const p of numbered) text(svg, BOX.left - 6, yOf(p) + 5, `${p}`, 'param-axis', 'end');
     text(svg, BOX.left - 6, 16, 'mb', 'param-axis', 'end');
     // Temperature lines, numbered where they meet the bottom edge.
     const perDegree = (mainX(1, bottom) - mainX(0, bottom)) * zoom;

@@ -56,7 +56,7 @@
 
     for (const t of range(-40, 40, 10)) text(svg, xOf(t, PBOT), BOX.bottom + 18, t, 'axis');
     text(svg, (BOX.left + BOX.right) / 2, H - 6, 'Temperature (°C)', 'axis title');
-    for (let p = PTOP; p <= 1000; p += 50) text(svg, BOX.left - 8, yOf(p) + 4, p, pLabelClass(p), 'end');
+    for (let p = PTOP; p <= 1050; p += 50) text(svg, BOX.left - 8, yOf(p) + 4, p, pLabelClass(p), 'end');
     text(svg, 8, 12, 'mb', 'axis unit', 'start');
     el('rect', { x: BOX.left, y: BOX.top, width: PW, height: PH, class: 'frame' }, svg);
 

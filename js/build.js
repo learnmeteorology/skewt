@@ -66,7 +66,7 @@
   for (const b of background) {
     if (b.kind !== 'isotherm') line(groups[b.kind], b.pts, 'bg ' + b.kind, b.kind);
   }
-  for (let p = PTOP; p <= 1000; p += 50) text(layers.isobar, BOX.left - 8, yOf(p) + 4, p, pLabelClass(p), 'end');
+  for (let p = PTOP; p <= 1050; p += 50) text(layers.isobar, BOX.left - 8, yOf(p) + 4, p, pLabelClass(p), 'end');
   text(layers.isobar, 8, 12, 'mb', 'axis unit', 'start');
 
   // x position of a temperature line for a given amount of skew.

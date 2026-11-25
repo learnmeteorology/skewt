@@ -390,7 +390,9 @@ button.primary { background: var(--brand); border-color: var(--brand); color: #f
   :is(#skewt, #quizchart, #build):not(.zoomed *) { overflow: visible; }
   .axis.unit:not(.zoomed *) { transform: translateY(-10px); }
   .axis.title:not(.zoomed *) { transform: translateY(5px); }
-  svg:not(.all-labels, .zoomed *) .axis.minor { display: none; }
+  /* Every 50 mb stays numbered: those between the hundreds move just inside the chart. */
+  .axis.pressure.fifty:not(.zoomed *) { text-anchor: start; transform: translateX(12px); paint-order: stroke;
+    stroke: var(--panel); stroke-width: 5; stroke-linejoin: round; }
   #quizchart.all-labels:not(.zoomed *) .axis { font-size: 15px; }
   .explore-page figure { padding: 4px; }
   .zoom { display: block; margin: 2px auto 4px; padding: 8px 16px; min-height: 44px; flex: none; }
@@ -650,7 +652,10 @@ body.beginner .inter-only, body.beginner .param-extra { display: none; }
 .param-chart .param-line { stroke-width: 2.2; stroke-opacity: 1; }
 .param-chart .cin, .param-chart .cape { stroke-width: 1.5; }
 .param-route { fill: none; stroke: #ffd33d; stroke-width: 11; stroke-opacity: .6; stroke-linecap: round; stroke-linejoin: round; }
-.param-axis { fill: var(--muted); font-size: 15px; }
+.param-axis { --axis-size: 15px; fill: var(--muted); font-size: var(--axis-size); }
+.param-axis.inside { paint-order: stroke; stroke: var(--panel); stroke-width: 4; stroke-linejoin: round; }
+/* The start page's preview chart is drawn small, so its numbers are a little larger. */
+#herochart .axis { font-size: 14px; }
 .param-name, .param-answer { stroke: var(--panel); stroke-width: 5; stroke-linejoin: round; paint-order: stroke; fill: var(--text); font-size: 15px; }
 .param-answer { font-size: 18px; font-weight: 700; }
 .param-leader { fill: none; stroke: var(--text); stroke-width: 1.2; }
@@ -666,7 +671,8 @@ body.beginner .inter-only, body.beginner .param-extra { display: none; }
 @media (max-width: 640px) {
   .param { padding: 14px 10px; }
   /* The chart shrinks on a phone, so its words are drawn larger. */
-  .param-axis, .param-name { font-size: 19px; }
+  .param-axis { --axis-size: 19px; }
+  .param-name { font-size: 19px; }
   .param-answer { font-size: 22px; }
 }
 :root[data-theme="dark"] .param-route { stroke-opacity: .35; }
@@ -716,7 +722,7 @@ body.beginner .inter-only, body.beginner .param-extra { display: none; }
 .lesson-figure svg { display: block; width: 100%; height: 100%; }
 /* The chart's lettering grows with it, so it starts a little smaller here. */
 @media (min-width: 761px) {
-  .lesson .param-axis { font-size: 13px; }
+  .lesson .param-axis { --axis-size: 13px; }
   .lesson .param-name { font-size: 14px; }
   .lesson .param-answer { font-size: 16px; }
 }

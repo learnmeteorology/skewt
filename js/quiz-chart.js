@@ -55,7 +55,7 @@
     el('rect', { x: BOX.left, y: BOX.top, width: PW, height: PH, class: 'frame' }, base);
     for (const t of range(-40, 40, 10)) text(base, xOf(t, PBOT), BOX.bottom + 18, t, 'axis');
     text(base, (BOX.left + BOX.right) / 2, H - 6, 'Temperature (°C)', 'axis title');
-    for (let p = PTOP; p <= 1000; p += 50) text(base, BOX.left - 8, yOf(p) + 4, p, pLabelClass(p), 'end');
+    for (let p = PTOP; p <= 1050; p += 50) text(base, BOX.left - 8, yOf(p) + 4, p, pLabelClass(p), 'end');
     text(base, 8, 12, 'mb', 'axis unit', 'start');
     for (const l of levels) barb(base, BARB_X, yOf(l.p), l.wdir, l.wspd);
 

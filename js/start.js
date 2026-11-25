@@ -2,7 +2,7 @@
 // A simple preview chart for the start page: pressure, temperature lines, temperature, dewpoint and wind.
 (function () {
   'use strict';
-  const { BOX, BARB_X, PW, PH, yOf, xOf, el, pathD, background, barb } = SkewChart;
+  const { BOX, BARB_X, PW, PH, PTOP, yOf, xOf, el, text, pathD, pLabelClass, background, barb } = SkewChart;
   const svg = document.getElementById('herochart');
   const levels = SOUNDINGS[0].levels;
   const clip = el('clipPath', { id: 'heroclip' }, el('defs', {}, svg));
@@ -16,6 +16,8 @@
   }
   el('rect', { x: BOX.left, y: BOX.top, width: PW, height: PH, class: 'frame' }, svg);
   for (const l of levels) barb(svg, BARB_X, yOf(l.p), l.wdir, l.wspd);
-  // Crop away the space reserved for axis labels, which this preview leaves out.
-  svg.setAttribute('viewBox', `${BOX.left - 8} 0 ${BARB_X - BOX.left + 48} ${BOX.bottom + 12}`);
+  for (let p = PTOP; p <= 1050; p += 50) text(svg, BOX.left - 8, yOf(p) + 4, p, pLabelClass(p), 'end');
+  text(svg, BOX.left - 44, 12, 'mb', 'axis unit', 'start');
+  // Crop away the space reserved for the temperature numbers, which this preview leaves out.
+  svg.setAttribute('viewBox', `${BOX.left - 50} 0 ${BARB_X - BOX.left + 90} ${BOX.bottom + 12}`);
 })();

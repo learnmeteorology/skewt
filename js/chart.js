@@ -29,9 +29,9 @@
   const f1 = v => v.toFixed(1);
   const range = (a, b, s) => { const r = []; for (let v = a; v <= b + 1e-9; v += s) r.push(v); return r; };
 
-  // Small screens only have room to label the main pressure levels (see .minor in style.css).
-  const MAIN_P = [100, 150, 200, 250, 300, 400, 500, 700, 850, 1000];
-  const pLabelClass = p => (MAIN_P.includes(p) ? 'axis' : 'axis minor');
+  // Every 50 mb is numbered. Small screens have no room for one column, so there the numbers
+  // between the hundreds move just inside the chart (see .fifty in style.css).
+  const pLabelClass = p => (p % 100 === 0 ? 'axis pressure' : 'axis pressure fifty');
 
   // Background lines never change, so compute them once.
   const fine = range(PTOP, PBOT, 10);
