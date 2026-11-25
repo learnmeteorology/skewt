@@ -123,4 +123,59 @@ for (const sounding of S) assert.strictEqual(Q.plotItems(sounding).length, 12, s
   const P = require('./js/params.js').values(T, S[0]);
   assert(P.tv > P.a.t && P.tv - P.a.t < 3, 'virtual temperature a little above temperature');
 }
+// Every lesson task must have an answer that can be checked.
+{
+  const lessons = require('./js/lessons.js')(T, S, require('./js/params.js'));
+  assert.strictEqual(lessons.length, 13, 'lesson count');
+  assert.strictEqual(lessons.filter(l => l.level === 'Intro').length, 7, 'intro lessons');
+  assert.strictEqual(new Set(lessons.map(l => l.id)).size, 13, 'lesson ids');
+  const finite = pts => pts.every(([t, p]) => Number.isFinite(t) && Number.isFinite(p));
+  for (const lesson of lessons) {
+    const where = step => `${lesson.id}: ${step.title}`;
+    assert(lesson.title && lesson.summary && lesson.source && lesson.learned.length, `${lesson.id} text`);
+    const ids = lesson.steps.filter(s => s.task).map(s => s.task.id);
+    assert.strictEqual(new Set(ids).size, ids.length, `${lesson.id} task ids`);
+    for (const step of lesson.steps) {
+      for (const chart of [step.chart, step.after && step.after.chart]) {
+        if (!chart) continue;
+        if (chart.fit) assert(finite(chart.fit) && chart.top < chart.bottom, `${where(step)} view`);
+        for (const line of chart.lines || []) assert(finite(line.pts), `${where(step)} line`);
+        for (const mark of chart.dots || []) assert(finite([mark.at]), `${where(step)} dot`);
+      }
+      for (const scene of [step.scene, step.after && step.after.scene]) {
+        if (!scene) continue;
+        for (let u = 0; u <= 1; u += 0.1) {
+          const p = scene.from * Math.pow(scene.to / scene.from, u);
+          assert(!/NaN|undefined|null|Infinity/.test(scene.read(p)), `${where(step)} reading at ${p}`);
+        }
+        for (const t of scene.tracks) assert(Number.isFinite(t.at(t.from)) && Number.isFinite(t.at(t.to)), `${where(step)} track`);
+      }
+      const task = step.task;
+      if (!task) continue;
+      assert(task.done, `${where(step)} explanation`);
+      if (task.type === 'pick') {
+        assert(task.lines[task.right], `${where(step)} right line`);
+        for (const [letter, line] of Object.entries(task.lines)) {
+          assert(finite(line.pts) && line.describe, `${where(step)} line ${letter}`);
+          assert(letter === task.right || line.why, `${where(step)} reason for ${letter}`);
+        }
+      } else if (task.type === 'choice') {
+        assert(task.choices.includes(task.right) && task.choices.length >= 2, `${where(step)} choices`);
+        for (const choice of task.choices) assert(choice === task.right || task.why[choice], `${where(step)} reason for ${choice}`);
+      } else if (task.type === 'number') {
+        assert(Number.isFinite(task.value) && task.margin >= 0 && task.label && task.hint, `${where(step)} number`);
+      } else {
+        const [t, p] = task.goal, chart = step.chart;
+        assert(Number.isFinite(t) && p >= chart.top && p <= chart.bottom, `${where(step)} point`);
+        if (task.typed) near(task.typed.value, p, 0.01, `${where(step)} typed value`);
+      }
+    }
+  }
+  const find = (id, task) => lessons.find(l => l.id === id).steps.find(s => s.task && s.task.id === task).task;
+  near(find('parcel', 'tap').goal[1], 890.5, 1, 'humid LCL');
+  near(find('rising', 'li').value, -9.5, 0.05, 'storm LI');
+  near(find('indices', 'k').value, 25, 1e-9, 'storm K');
+  near(find('together', 'tt').value, 41.5, 0.05, 'humid TT');
+  near(find('virtual', 'tv').value, 20.4, 0.05, 'virtual temperature');
+}
 console.log('all checks passed');

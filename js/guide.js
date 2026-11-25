@@ -1,7 +1,7 @@
 /* global SkewChart */
 // "Guide to the lines" on the Explore page: a sample of each line, and in the Full chart view a
 // "Learn more" with its theory and math. Equations are LaTeX, typeset by KaTeX.
-// Displayed equations come only from Wallace and Hobbs, which is not always what js/thermo.js and
+// Displayed equations come from Wallace and Hobbs (one exception, noted below), which is not always what js/thermo.js and
 // js/chart.js calculate. Where it differs, the lesson says so in plain words; keep those up to date.
 (function (root) {
   'use strict';
@@ -41,8 +41,9 @@
   };
 
   // An equation from the book: LaTeX, plain words to show if KaTeX can't be downloaded, and where it
-  // is printed. Every displayed equation must come from Wallace and Hobbs, Atmospheric Science:
-  // An Introductory Survey, 2nd ed. (2006). Page numbers are the printed ones.
+  // is printed. Displayed equations come from Wallace and Hobbs, Atmospheric Science: An
+  // Introductory Survey, 2nd ed. (2006), except the saturation vapor pressure formula, which has
+  // source: null and names where it is listed in the sentence before it. Page numbers are printed ones.
   const eq = (latex, plain, source) => ({ latex, plain, source });
   // "where" lists what the symbols in the equations mean: [LaTeX symbol, plain symbol, meaning].
   const where = (...symbols) => ({ symbols });
@@ -77,7 +78,9 @@
       'The dewpoint is the temperature to which air must be cooled, at constant pressure, to become saturated. That gives the relative humidity, in percent:',
       eq(tex`RH = 100\,\frac{w_s\ (\text{at } T_d,\ p)}{w_s\ (\text{at } T,\ p)}`, 'RH = 100 × ws(at Td and p) / ws(at T and p)', 'Equation (3.65), p. 82'),
       where([tex`T,\ T_d`, 'T, Td', 'temperature and dewpoint'], [tex`w_s`, 'ws', 'saturation mixing ratio'], [tex`p`, 'p', 'pressure']),
-      "To find saturation vapor pressure from temperature, this site uses Bolton's 1980 formula rather than equation (3.97), p. 99 of Wallace and Hobbs (2006). Its other moisture calculations rely on it too.",
+      'To find saturation vapor pressure from temperature, this site uses a different formula from equation (3.97), p. 99 of Wallace and Hobbs (2006). It is listed on the NSF NCAR Earth Observing Laboratory’s page of water vapor pressure formulations, linked from About this site. Its other moisture calculations rely on it too.',
+      { latex: tex`e_s = 6.112\,\exp\!\left(\frac{17.67\,t}{t + 243.5}\right)`, plain: 'es = 6.112 exp(17.67 t / (t + 243.5))', source: null },
+      where([tex`e_s`, 'es', 'saturation vapor pressure over water, in hPa (the same as mb)'], [tex`t`, 't', 'temperature in °C']),
     ],
     wind: [
       h('How to read it'),
@@ -335,7 +338,8 @@
     }
     const figure = make('div', 'cited'), box = make('div', 'equation');
     typeset(box, item.latex, item.plain, true);
-    figure.append(box, make('p', 'source', `${item.source} of Wallace and Hobbs (2006)`));
+    figure.append(box);
+    if (item.source) figure.append(make('p', 'source', `${item.source} of Wallace and Hobbs (2006)`));
     return figure;
   }
 

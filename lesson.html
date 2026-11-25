@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lesson · Skew-T Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Carlito:wght@400;700&display=swap">
+  <!-- KaTeX typesets the equations. If it can't load, a plain-text equation is shown. -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="style.css">
+  <script src="js/theme.js"></script>
+</head>
+<body class="lesson-page">
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="Skew-T Guide home">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="8"/><path class="g" d="M8 26 13 17 11 12 16 6"/><path class="r" d="M20 26 17 18 22 13 25 6"/></svg>
+      <span>Skew-T Guide</span>
+    </a>
+    <nav class="tabs" aria-label="Pages">
+      <a href="index.html">Start</a>
+      <a href="learn.html" aria-current="page">Learn</a>
+      <a href="explore.html">Explore</a>
+      <a href="practice.html">Practice</a>
+      <a href="test.html">Test</a>
+    </nav>
+    <button id="theme" type="button"></button>
+  </header>
+  <main class="lesson">
+    <div class="lesson-screen">
+      <div class="lesson-head">
+        <a class="lesson-exit" href="learn.html">&larr; All lessons</a>
+        <div>
+          <h1 id="lessontitle">Lesson</h1>
+          <p id="lessonlevel"></p>
+        </div>
+      </div>
+      <div class="lesson-dots" id="dots" role="group" aria-label="Jump to a step"></div>
+      <div class="lesson-body">
+        <section class="lesson-words">
+          <p class="lesson-count" id="stage"></p>
+          <h2 id="title" tabindex="-1"></h2>
+          <div id="words"></div>
+        </section>
+        <div class="lesson-figure">
+          <figure id="figure"></figure>
+          <div class="lesson-caption">
+            <p id="reading"></p>
+            <button id="replay" type="button" hidden>Replay</button>
+          </div>
+          <p id="announce" class="sr-only" role="status"></p>
+        </div>
+        <section class="lesson-actions">
+          <div id="answers" class="lesson-answers"></div>
+        </section>
+        <div class="lesson-bar">
+          <p id="lessonfeedback" role="status"></p>
+          <div class="lesson-nav">
+            <button id="back" type="button">Back</button>
+            <button id="showme" type="button">Show me</button>
+            <button id="next" type="button" class="primary">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="lesson-source" id="lessonsource"></p>
+    <p class="feedback-link"><button id="restart" type="button" class="lesson-restart">Start this lesson over</button></p>
+    <p class="feedback-link"><a href="learn.html">All lessons</a> · <a href="build.html">Reference</a> · <a href="feedback.html">Send feedback</a></p>
+  </main>
+  <script src="js/thermo.js"></script>
+  <script src="js/soundings.js"></script>
+  <script src="js/chart.js"></script>
+  <script src="js/params.js"></script>
+  <script src="js/lessons.js"></script>
+  <script defer src="js/lesson.js"></script>
+</body>
+</html>

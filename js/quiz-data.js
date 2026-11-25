@@ -4,9 +4,9 @@
 
   // Test results are grouped by these. study: where to go afterwards, as [link text, address].
   const TOPICS = {
-    basics: { name: 'Chart basics and line types', study: [['Learn', 'build.html'], ['Practice identifying features', 'practice.html?skill=find']] },
-    air: { name: 'Temperature, dewpoint and wind', study: [['Learn', 'build.html'], ['Practice identifying features', 'practice.html?skill=find']] },
-    lifting: { name: 'Lifting air', study: [['Learn', 'build.html'], ['Practice identifying features', 'practice.html?skill=find']] },
+    basics: { name: 'Chart basics and line types', study: [['Learn', 'learn.html'], ['Practice identifying features', 'practice.html?skill=find']] },
+    air: { name: 'Temperature, dewpoint and wind', study: [['Learn', 'learn.html'], ['Practice identifying features', 'practice.html?skill=find']] },
+    lifting: { name: 'Lifting air', study: [['Learn', 'learn.html'], ['Practice identifying features', 'practice.html?skill=find']] },
     plotting: { name: 'Plotting data', study: [['Practice plotting', 'practice.html?skill=plot']] },
   };
 

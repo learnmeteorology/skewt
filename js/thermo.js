@@ -4,7 +4,8 @@
   const RD = 287.04, CP = 1005.7, LV = 2.501e6, EPS = 0.622, G = 9.80665;
   const KAPPA = RD / CP, K = 273.15;
 
-  // Saturation vapor pressure (Bolton 1980; not from Wallace and Hobbs) and its inverse.
+  // Saturation vapor pressure over water and its inverse. Not from Wallace and Hobbs: the formula
+  // is listed on NSF NCAR EOL's "water vapor pressure formulations" page (linked from About).
   const satVapor = t => 6.112 * Math.exp((17.67 * t) / (t + 243.5));
   const dewFromVapor = e => {
     const l = Math.log(e / 6.112);

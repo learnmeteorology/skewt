@@ -7,7 +7,7 @@ An interactive, educational Skew-T log-P diagram that runs entirely in the brows
 - A data table of pressure, temperature and dewpoint below the chart, linked to it; type in it to change values without dragging
 - On small screens, Explore, Practice and Test have a button that zooms in on the chart
 - Drag temperature and dewpoint dots; parcel path, CAPE, CIN, LCL, LFC and EL update
-- "Guide to the lines" with a drawn sample of each line; in the Full chart view each line has a Learn more with its theory and LaTeX equations. The displayed equations come only from Wallace and Hobbs (2006; full reference at the end), with equation and page numbers; lessons say in plain words where the calculations differ. The CAPE lesson has a table of guide values with its sources. The CIN lesson's sources are listed in a comment in js/guide.js. KaTeX from jsDelivr typesets them, which needs an internet connection; plain-text equations are shown without it
+- "Guide to the lines" with a drawn sample of each line; in the Full chart view each line has a Learn more with its theory and LaTeX equations. The displayed equations come from Wallace and Hobbs (2006; full reference at the end), with equation and page numbers, except the saturation vapor pressure formula, which comes from NSF NCAR EOL's page; lessons say in plain words where the calculations differ. The CAPE lesson has a table of guide values with its sources. The CIN lesson's sources are listed in a comment in js/guide.js. KaTeX from jsDelivr typesets them, which needs an internet connection; plain-text equations are shown without it
 - A Beginner and Intermediate toggle on Learn. Beginner shows the basic parameters (mixing ratio, saturation mixing ratio, relative humidity, freezing level, inversion and Lifted Index) and hides the extra equation steps. Intermediate shows everything. The choice is remembered in the visitor's browser
 - Close-up pictures of the wind barb marks on Learn, and in Explore's guide: on the wind barb card in the Basic chart view and under its Learn more in the Full chart view
 - Three made-up teaching soundings
@@ -21,12 +21,14 @@ An interactive, educational Skew-T log-P diagram that runs entirely in the brows
 ## Pages
 
 - `index.html`: start page
-- `build.html`: Learn, a step-by-step builder followed by what each line is for
+- `build.html`: the reference, a step-by-step builder followed by what each line is for
 - `explore.html`: interactive explorer, with Basic and Full chart views
 - `practice.html`: practice identifying chart features and plotting data
 - `test.html`: self-check test. On your own computer, `test.html?debug` adds a button that previews the results screen with made-up results
 - `quiz.html`: forwards the old quiz address to Practice
 - `js/params.js`: Learn's "Finding parameters on a Skew-T" section, with a zoomed step-by-step chart for the parcel path and each of 23 parameters, with equations typeset by KaTeX. The parcel path, LCL, LFC, EL, CIN and CAPE charts and steps sit inside their descriptions higher up the page
+- `learn.html`: the Learn page. It lists 13 interactive lessons (7 Intro, 6 Intermediate) with each one's progress, and links to the reference (`build.html`). `js/learn.js` runs it
+- `lesson.html?lesson=...`: plays one lesson. `js/lessons.js` holds every lesson's words, chart, animation and tasks (pick a line, mark a point, type a value or choose an answer), and `js/lesson.js` plays them, on one screen with the buttons always in the same place: the animation plays by itself with one Skip or Replay button (no automatic motion for people who ask for less), the line about to be picked lights up, and there is feedback and Show me. Every lesson chart shows all the printed lines, with a pressure line every 50 mb. Progress is saved in the visitor's browser. The answers are in the page code: lessons are for practice, not grading. `test.js` checks that every task has a checkable answer
 - `about.html`: what the site is for, its limits, how it was checked and its sources
 - `feedback.html`: a Google Forms feedback form, linked from the Start, Learn and Explore pages and the Test results. What visitors enter is sent to Google
 
@@ -42,7 +44,7 @@ No build step. Open `index.html`, or serve the folder:
 - `js/quiz-chart.js`: their shared chart: drawing, picking lines and checking plotted points
 - `js/practice.js`: Practice page flow
 - `js/exam.js`: Test page flow (`test.js` is the project's checks, not this page)
-- `js/thermo.js`: thermodynamics. The LCL is the crossing of the dry adiabat and mixing ratio line (p. 83 of Wallace and Hobbs, 2006), and moist ascent solves equation (3.68), p. 85, in small steps. Saturation vapor pressure is from Bolton (1980)
+- `js/thermo.js`: thermodynamics. The LCL is the crossing of the dry adiabat and mixing ratio line (p. 83 of Wallace and Hobbs, 2006), and moist ascent solves equation (3.68), p. 85, in small steps. Saturation vapor pressure uses the formula listed on [NSF NCAR EOL's water vapor pressure formulations page](https://www.eol.ucar.edu/data-software/conventions-and-standards/water-vapor-pressure-formulations)
 - `js/soundings.js`: example data
 - `js/chart.js`: chart drawing shared by all pages with a chart
 - `js/app.js`: explorer page interaction

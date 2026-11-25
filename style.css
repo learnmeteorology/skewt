@@ -682,3 +682,127 @@ body.beginner .inter-only, body.beginner .param-extra { display: none; }
 .param-equation { margin-top: 10px; }
 .param-equation .symbols { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 14px; align-items: baseline; margin: 6px 0; }
 .param-equation .symbols dd { margin: 0; }
+
+/* A lesson fits one screen: chart on the left; words, answers and a fixed button bar on the right. */
+/* Lessons use the whole window, so the chart can be as large as possible. */
+.lesson-page { max-width: 1900px; padding-top: 0; padding-bottom: 0; }
+.lesson-page .topbar { margin-bottom: 4px; }
+.lesson { padding-bottom: 32px; }
+.lesson-screen { display: flex; flex-direction: column; height: calc(100vh - var(--bar) - 12px); height: calc(100svh - var(--bar) - 12px); min-height: 520px; }
+.lesson-head { display: grid; grid-template-columns: 9em minmax(0, 1fr) 9em; align-items: center; gap: 8px; text-align: center; }
+.lesson-head h1 { margin: 0; font-size: clamp(1.15rem, 2.4vw, 1.5rem); line-height: 1.2; }
+.lesson-head p { margin: 0; color: var(--muted); font-size: .9rem; }
+.lesson-head > div { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; column-gap: 12px; }
+.lesson-exit { justify-self: start; font-size: .95rem; }
+/* One segment for each step. */
+/* (The builder's #dots rule would otherwise let this row stretch.) */
+.lesson-screen #dots { flex: none; display: flex; gap: 4px; margin: 0 0 4px; }
+.lesson-dots .step-dot { flex: 1; min-width: 0; height: 18px; padding: 0; border: 0; background: none; display: flex; align-items: center; }
+.lesson-dots .step-dot::before { width: 100%; height: 6px; border: 0; border-radius: 3px; background: var(--line); transform: none; }
+.lesson-dots .step-dot.done::before { background: var(--muted); }
+.lesson-dots .step-dot[aria-current="step"]::before { height: 10px; border-radius: 5px; background: var(--brand); transform: none; }
+.lesson-body { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 400px);
+               grid-template-areas: "figure words" "figure actions" "figure bar"; grid-template-rows: auto minmax(0, 1fr) auto; column-gap: 20px; }
+.lesson-words { grid-area: words; }
+.lesson-words h2 { margin: 2px 0 6px; font-size: 1.35rem; line-height: 1.3; }
+/* Focus moves here for screen readers when the step changes; it isn't something to click. */
+.lesson-words h2:focus { outline: none; }
+.lesson-words p, .lesson-words li { line-height: 1.5; }
+.lesson-words p { margin: 0 0 8px; }
+.lesson-count { color: var(--muted); font-size: .9rem; }
+.lesson-actions { grid-area: actions; min-height: 0; overflow-y: auto; padding: 4px 2px; }
+.lesson-figure { grid-area: figure; min-width: 0; min-height: 0; display: flex; flex-direction: column; }
+.lesson-figure figure { flex: 1; min-height: 0; align-self: stretch; width: 100%; padding: 6px; }
+.lesson-figure svg { display: block; width: 100%; height: 100%; }
+/* The chart's lettering grows with it, so it starts a little smaller here. */
+@media (min-width: 761px) {
+  .lesson .param-axis { font-size: 13px; }
+  .lesson .param-name { font-size: 14px; }
+  .lesson .param-answer { font-size: 16px; }
+}
+.lesson-caption { display: flex; align-items: center; gap: 12px; height: 2.9em; flex: none; }
+/* With nothing moving, the chart takes the caption's space too. */
+.lesson-caption.empty { display: none; }
+.lesson-caption p { flex: 1; margin: 0; font-size: .95rem; line-height: 1.35; font-variant-numeric: tabular-nums; }
+.lesson-caption button { flex: none; min-width: 5.5em; min-height: 40px; }
+.lesson-caption button[hidden] { display: none; }
+.lesson-bar { grid-area: bar; padding-top: 8px; border-top: 1px solid var(--line); background: var(--bg); }
+.lesson-answers { display: flex; flex-wrap: wrap; gap: 10px; }
+.lesson-answers button { min-height: 48px; padding: 8px 18px; font-size: 1.05rem; border-width: 2px; }
+.lesson-answers .lesson-letter { flex: 1; font-weight: 700; }
+.lesson-answers .lesson-choice { width: 100%; text-align: left; line-height: 1.3; }
+.lesson-answers.short .lesson-choice { width: calc(50% - 5px); }
+.lesson-answers button.is-wrong { opacity: .45; text-decoration: line-through; border-color: var(--temp); cursor: default; }
+.lesson-answers button.is-right { border-color: var(--dew); font-weight: 700; }
+.lesson-answers button.is-right::before { content: '\2713  '; color: var(--dew); }
+.lesson-answers button:disabled:not(.is-right) { opacity: .45; }
+.lesson-typed { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.lesson-typed input { width: 7em; font: inherit; padding: 10px; color: var(--text); background: var(--panel); border: 2px solid var(--line); border-radius: 8px; }
+#lessonfeedback { max-height: 8.5em; margin: 0 0 8px; overflow-y: auto; line-height: 1.4; }
+#lessonfeedback:empty { margin: 0; }
+#lessonfeedback.right, #lessonfeedback.wrong { padding: 6px 10px; background: var(--panel); border-left: 5px solid var(--dew); border-radius: 0 8px 8px 0; }
+#lessonfeedback.wrong { border-color: var(--temp); }
+.lesson-nav { display: flex; gap: 8px; }
+.lesson-nav button { min-height: 48px; padding: 8px 18px; }
+.lesson-nav #next { margin-left: auto; min-width: 9em; }
+.lesson-nav button:disabled { opacity: .4; cursor: default; }
+.lesson-restart { font-size: .9rem; }
+.lesson-clickable { cursor: crosshair; touch-action: manipulation; }
+.lesson-clickable.lesson-onLine { cursor: pointer; }
+.lesson-hover { fill: none; stroke: #ffd33d; stroke-width: 13; stroke-opacity: .45; stroke-linecap: round; stroke-linejoin: round; }
+.lesson-aim { fill: none; stroke: var(--text); stroke-width: 2; }
+.lesson-wrong { fill: none; stroke: var(--temp); stroke-width: 10; stroke-opacity: .35; stroke-linecap: round; }
+.lesson-miss { fill: none; stroke: var(--text); stroke-width: 3; }
+.lesson-source { margin-top: 24px; color: var(--muted); font-size: .88rem; }
+/* Small screens: one column. The button bar, with the reply to an answer, stays at the bottom. */
+@media (max-width: 760px) {
+  .lesson-screen { height: auto; min-height: 0; }
+  .lesson-head { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .lesson-exit { justify-self: center; font-size: .9rem; }
+  #lessonlevel { display: none; }
+  .lesson-screen #dots { margin: 4px 0; scroll-margin-top: 4px; }
+  .lesson-words h2 { font-size: 1.2rem; }
+  .lesson-body { display: flex; flex-direction: column; }
+  .lesson-words, .lesson-actions { overflow: visible; }
+  .lesson-figure figure { flex: none; }
+  .lesson-page { padding-left: 8px; padding-right: 8px; }
+  .lesson-figure figure { padding: 2px; }
+  .lesson-figure svg { height: auto; max-height: 50vh; max-height: 50svh; }
+  .lesson-caption { height: 4.2em; }
+  .lesson-bar { position: sticky; bottom: 0; z-index: 2; margin-top: 8px; padding-bottom: 8px; }
+  #lessonfeedback { max-height: 24vh; }
+}
+/* The lines being traced or chosen are thicker than the printed ones around them. */
+.lesson .param-chart .param-line { stroke-width: 3.2; }
+.lesson-parcel { fill: var(--parcel); stroke: var(--panel); stroke-width: 2.5; pointer-events: none; }
+.lesson-parcel.vapor { fill: var(--dew); }
+.lesson-equation { margin: 8px 0; padding: 6px 10px; overflow-x: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; }
+.lesson-barb { display: block; width: 100px; height: 100px; margin: 2px auto; color: var(--text); background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+.lesson-barb .barb { stroke-width: 2; }
+.lesson-more { margin-top: 14px; }
+
+.reference-back { flex: none; margin: 0; font-size: .95rem; text-align: center; }
+
+/* Learn: the lessons in two levels, and the way into the reference. */
+.learn { max-width: 780px; margin: 0 auto; padding-bottom: 40px; }
+.learn > h1 { font-size: clamp(1.7rem, 4vw, 2.3rem); line-height: 1.2; text-align: center; }
+.learn-intro, .learn-next, .learn-note { text-align: center; }
+.learn-intro { font-size: 1.15rem; line-height: 1.5; color: var(--muted); }
+.learn-note { margin-top: 18px; color: var(--muted); font-size: .95rem; }
+.learn-level, .learn-reference { margin-top: 30px; }
+.learn-level h2, .learn-reference h2 { margin: 0 0 4px; padding-bottom: 4px; font-size: 1.4rem; border-bottom: 2px solid var(--line); }
+.learn-list { margin: 10px 0 0; padding: 0; list-style: none; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+.learn-list li + li { border-top: 1px solid var(--line); }
+.learn-list a { display: grid; grid-template-columns: 2.2em minmax(0, 1fr) auto; gap: 2px 12px; align-items: center; padding: 12px 16px; color: var(--text); text-decoration: none; }
+.learn-list a:hover strong, .learn-list a:focus-visible strong { text-decoration: underline; }
+.learn-number { width: 2.2em; height: 2.2em; display: grid; place-items: center; border: 2px solid var(--line); border-radius: 50%; font-weight: 700; }
+.learn-words { display: grid; gap: 2px; line-height: 1.35; }
+.learn-words strong { font-size: 1.1rem; }
+.learn-words span, .learn-status { color: var(--muted); font-size: .95rem; }
+.learn-status { text-align: right; }
+.learn-status.complete { color: var(--dew); font-weight: 700; }
+.learn-status.started { color: var(--text); font-weight: 700; }
+@media (max-width: 560px) {
+  .learn-list a { grid-template-columns: 2.2em minmax(0, 1fr); padding: 12px; }
+  .learn-status { grid-column: 2; text-align: left; }
+}

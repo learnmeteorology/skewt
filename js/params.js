@@ -169,15 +169,19 @@
     const xs = spec.fit.map(([t, p]) => mainX(t, p));
     let x0 = Math.min(...xs), x1 = Math.max(...xs);
     // One zoom for both directions, leaving room beside the outermost points for labels.
-    const zoom = Math.min((RIGHT - LEFT - 2 * EDGE) / (x1 - x0), (spec.height || MAX_PLOT) / (y1 - y0));
+    // spec.shape is the plot height that fills the page's space for the chart.
+    const tallest = spec.shape ? Math.max(MIN_PLOT, spec.shape) : spec.height || MAX_PLOT;
+    const shortest = spec.shape ? tallest : MIN_PLOT;
+    const zoom = Math.min((RIGHT - LEFT - 2 * EDGE) / (x1 - x0), tallest / (y1 - y0));
     const wide = (RIGHT - LEFT) / zoom, middle = (x0 + x1) / 2;
     x0 = middle - wide / 2;
     x1 = middle + wide / 2;
     // A short, wide crop shows more levels, mostly above, rather than being stretched.
-    if ((y1 - y0) * zoom < MIN_PLOT) {
-      const extra = MIN_PLOT / zoom - (y1 - y0);
+    if ((y1 - y0) * zoom < shortest) {
+      const extra = shortest / zoom - (y1 - y0);
       const below = Math.min(extra, Math.max(0, mainY(1050) - y1));
-      y0 -= extra - below;
+      // It never goes above 100 mb, where the chart's data end.
+      y0 -= Math.min(extra - below, Math.max(0, y0 - mainY(100)));
       y1 += below;
     }
     const BOX = { left: LEFT, right: RIGHT, top: TOP, bottom: TOP + (y1 - y0) * zoom };
@@ -195,12 +199,15 @@
     for (const area of spec.shade || []) {
       el('path', { d: pathD(area.pts.map(point)) + 'Z', class: area.cls }, plot);
     }
-    let isobars = range(100, 1050, 50).filter(p => p >= top - 0.5 && p <= bottom + 0.5);
-    if (isobars.length > 8) isobars = LABELLED.filter(p => p >= top - 0.5 && p <= bottom + 0.5);
-    for (const p of isobars) {
-      el('path', { d: pathD([[BOX.left, yOf(p)], [BOX.right, yOf(p)]]), class: 'bg isobar' }, plot);
-      text(svg, BOX.left - 6, yOf(p) + 5, `${p}`, 'param-axis', 'end');
+    // A pressure line every 50 mb. Where they are too close to number them all, the main levels are
+    // numbered first, then any others with room.
+    const isobars = range(100, 1050, 50).filter(p => p >= top - 0.5 && p <= bottom + 0.5);
+    for (const p of isobars) el('path', { d: pathD([[BOX.left, yOf(p)], [BOX.right, yOf(p)]]), class: 'bg isobar' }, plot);
+    const numbered = [];
+    for (const p of [...isobars].sort((a, b) => LABELLED.includes(b) - LABELLED.includes(a))) {
+      if (numbered.every(q => Math.abs(yOf(p) - yOf(q)) >= 19)) numbered.push(p);
     }
+    for (const p of numbered) text(svg, BOX.left - 6, yOf(p) + 5, `${p}`, 'param-axis', 'end');
     text(svg, BOX.left - 6, 16, 'mb', 'param-axis', 'end');
     // Temperature lines, numbered where they meet the bottom edge.
     const perDegree = (mainX(1, bottom) - mainX(0, bottom)) * zoom;
@@ -212,6 +219,15 @@
     }
     text(svg, (BOX.left + BOX.right) / 2, H - 4, 'Temperature (°C)', 'param-axis');
 
+    // With spec.printed, every printed line of the main chart is drawn too: dry adiabats, moist
+    // adiabats and mixing ratio lines. (The isobars and isotherms are already above.)
+    if (spec.printed) {
+      for (const line of SkewChart.background) {
+        if (line.kind === 'isobar' || line.kind === 'isotherm') continue;
+        const pts = line.pts.map(([x, y]) => [BOX.left + (x - x0) * zoom, BOX.top + (y - y0) * zoom]);
+        el('path', { d: pathD(pts), class: `bg ${line.kind}` }, plot);
+      }
+    }
     // Highlighted routes sit under the lines, so each line keeps its own color on top.
     for (const route of spec.path || []) el('path', { d: pathD(route.map(point)), class: 'param-route' }, plot);
     for (const line of spec.lines) el('path', { d: pathD(line.pts.map(point)), class: line.cls }, plot);
@@ -239,6 +255,13 @@
       el('circle', { cx: x, cy: y, r: 11, class: 'param-step' }, svg);
       text(svg, x, y + 5, `${s.n}`, 'param-step-number');
     }
+    // For pages that check clicks: where a [temperature, pressure] point is drawn, and the reverse.
+    svg.toView = point;
+    svg.toData = (x, y) => {
+      const p = mainPressure(y0 + (y - BOX.top) / zoom);
+      return [tAt(x, p), p];
+    };
+    svg.plotBox = BOX;
     return svg;
   }
 
@@ -1030,5 +1053,5 @@
     return setLevel;
   }
 
-  root.SkewParams = { render };
+  root.SkewParams = { render, chart, values, toolValues, freezingLevels, lapseRate, stability };
 })(this);
