@@ -795,8 +795,30 @@ body.beginner .inter-only, body.beginner .param-extra { display: none; }
 .learn-intro, .learn-next, .learn-note { text-align: center; }
 .learn-intro { font-size: 1.15rem; line-height: 1.5; color: var(--muted); }
 .learn-note { margin-top: 18px; color: var(--muted); font-size: .95rem; }
-.learn-level, .learn-reference { margin-top: 30px; }
-.learn-level h2, .learn-reference h2 { margin: 0 0 4px; padding-bottom: 4px; font-size: 1.4rem; border-bottom: 2px solid var(--line); }
+/* The way into the reference: one card that can be clicked anywhere. */
+.reference-card { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 16px; align-items: center; margin-top: 22px; padding: 16px 18px;
+  color: var(--text); text-decoration: none; background: var(--panel); border: 2px solid var(--brand); border-radius: 16px;
+  box-shadow: 0 2px 10px rgb(0 0 0 / .08); transition: box-shadow .15s, transform .15s; }
+.reference-card:hover { box-shadow: 0 6px 18px rgb(0 0 0 / .16); transform: translateY(-1px); }
+.reference-card:focus-visible { outline: 3px solid var(--brand); outline-offset: 3px; }
+.reference-card svg { width: 72px; height: 72px; }
+.reference-card .profile { stroke-width: 3.5; stroke-linejoin: round; stroke-linecap: round; }
+.reference-card .frame { fill: none; }
+.reference-words { display: grid; gap: 4px; line-height: 1.35; }
+.reference-words strong { font-size: 1.25rem; }
+.reference-words > span { color: var(--muted); }
+.reference-words > .reference-has { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.reference-has span { padding: 2px 10px; color: var(--text); font-size: .88rem; background: var(--bg); border: 1px solid var(--line); border-radius: 999px; }
+.reference-open { padding: 10px 18px; font-weight: 700; white-space: nowrap; color: #fff; background: var(--brand); border-radius: 999px; }
+:root[data-theme="dark"] .reference-open { color: #0d1117; }
+@media (max-width: 640px) {
+  .reference-card { grid-template-columns: auto minmax(0, 1fr); gap: 12px; padding: 14px; }
+  .reference-card svg { width: 52px; height: 52px; align-self: start; }
+  .reference-open { grid-column: 1 / -1; text-align: center; }
+}
+@media (prefers-reduced-motion: reduce) { .reference-card { transition: none; } .reference-card:hover { transform: none; } }
+.learn-level { margin-top: 30px; }
+.learn-level h2 { margin: 0 0 4px; padding-bottom: 4px; font-size: 1.4rem; border-bottom: 2px solid var(--line); }
 .learn-list { margin: 10px 0 0; padding: 0; list-style: none; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
 .learn-list li + li { border-top: 1px solid var(--line); }
 .learn-list a { display: grid; grid-template-columns: 2.2em minmax(0, 1fr) auto; gap: 2px 12px; align-items: center; padding: 12px 16px; color: var(--text); text-decoration: none; }
