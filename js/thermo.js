@@ -40,7 +40,7 @@
     return t;
   }
 
-  // Lifting condensation level, found as in Wallace and Hobbs (p. 83): where the dry adiabat through
+  // Lifting condensation level, found as on p. 83 of Wallace and Hobbs (2006): where the dry adiabat through
   // (t, p) meets the saturation mixing ratio line through (td, p).
   function lcl(t, td, p) {
     const w = mixingRatio(td, p), th = theta(t, p);

@@ -10,7 +10,7 @@
   // Text is beginner level: [layer added, title, caption]. build.html explains each line further down.
   const STEPS = [
     ['frame', 'Start with an empty chart',
-      'A Skew-T shows the air above one place, from the ground up. We will follow a parcel: a small, imaginary portion of air. Press Next to build the chart.'],
+      'A Skew-T shows how temperature, moisture and wind change as you go up through the atmosphere. We will follow a parcel: a small, imaginary portion of air. Press Next to build the chart.'],
     ['isobar', 'Pressure marks the height',
       'Flat lines show air pressure in millibars (mb). Pressure drops as you go up.'],
     ['upright', 'Add temperature lines',

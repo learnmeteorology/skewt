@@ -45,7 +45,7 @@ for (const virtual of [false, true]) {
 // The correction (used by the Full chart) warms moist air, and here it weakens CIN.
 const plain = T.parcel(S[0].levels), corrected = T.parcel(S[0].levels, 2, { virtual: true });
 assert(corrected.path[0].cmp > corrected.path[0].t && corrected.cin > plain.cin, 'virtual temperature applied');
-// LCL (Wallace and Hobbs p. 83): the parcel keeps its potential temperature, and its saturation
+// LCL (p. 83 of Wallace and Hobbs, 2006): the parcel keeps its potential temperature, and its saturation
 // mixing ratio there equals the mixing ratio it started with. Includes the table's extreme values.
 for (const [t, td] of [[28, 21], [-6, -7], [35, 5], [50, -110], [-110, -110], [50, 50], [-40, -90]]) {
   const q = T.lcl(t, td, 1000);
